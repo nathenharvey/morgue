@@ -2,7 +2,30 @@
 exec 2>&1
 echo "Seeding the Database"
 
-$(hab pkg path core/mysql-client)/bin/mysql -u root -h 127.0.0.1 \
+database_host="127.0.0.1"
+database_port="3306"
+database_app_username=""
+database_app_password=""
+
+{{#if bind.database}}
+  {{~#eachAlive bind.database.members as |member|}}
+    database_host="{{member.sys.ip}}"
+    database_port="{{member.cfg.port}}"
+    database_app_username="{{member.cfg.app_username}}"
+    database_app_password="{{member.cfg.app_password}}"
+  {{~/eachAlive}}
+{{~/if}}
+
+echo "Nathen database_app_username: $database_app_username"
+echo "Nathen database_app_password: $database_app_password"
+
+echo "$(hab pkg path core/mysql-client)/bin/mysql -u $database_app_username -h $database_host \
+  -P $database_port -pmorgue_password \
+  --execute=\"create database if not exists morgue; \
+	     GRANT ALL ON morgue.* TO '$database_app_username'@'$database_host';\""
+
+$(hab pkg path core/mysql-client)/bin/mysql -u $database_app_username -h $database_host \
+  -P $database_port -pmorgue_password \
   --execute="create database if not exists morgue; \
-	     GRANT ALL ON morgue.* TO 'morgue'@'127.0.0.1' IDENTIFIED BY 'morgue_password';"  
+	     GRANT ALL ON morgue.* TO '$database_app_username'@'$database_host';"
 
