@@ -11,21 +11,24 @@ database_app_password=""
   {{~#eachAlive bind.database.members as |member|}}
     database_host="{{member.sys.ip}}"
     database_port="{{member.cfg.port}}"
-    database_app_username="{{member.cfg.app_username}}"
-    database_app_password="{{member.cfg.app_password}}"
+    database_app_username="{{member.cfg.username}}"
+    database_app_password="{{member.cfg.password}}"
   {{~/eachAlive}}
 {{~/if}}
 
 echo "Nathen database_app_username: $database_app_username"
 echo "Nathen database_app_password: $database_app_password"
 
-echo "$(hab pkg path core/mysql-client)/bin/mysql -u $database_app_username -h $database_host \
-  -P $database_port -pmorgue_password \
+echo "$(hab pkg path core/mysql-client)/bin/mysql \
+  -u $database_app_username \
+  -h $database_host \
+  -P $database_port \
+  -p$database_app_password \
   --execute=\"create database if not exists morgue; \
 	     GRANT ALL ON morgue.* TO '$database_app_username'@'$database_host';\""
 
-$(hab pkg path core/mysql-client)/bin/mysql -u $database_app_username -h $database_host \
-  -P $database_port -pmorgue_password \
-  --execute="create database if not exists morgue; \
-	     GRANT ALL ON morgue.* TO '$database_app_username'@'$database_host';"
+# $(hab pkg path core/mysql-client)/bin/mysql -u $database_app_username -h $database_host \
+#   -P $database_port -pmorgue_password \
+#   --execute="create database if not exists morgue; \
+# 	     GRANT ALL ON morgue.* TO '$database_app_username'@'$database_host';"
 

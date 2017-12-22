@@ -123,7 +123,7 @@ pkg_deps=(core/mysql-client)
 # available. If the bind does not contain the expected keys, the service will not start
 # successfully.
 pkg_binds=(
-  [database]="port host"
+  [database]="port host username password"
 )
 
 
