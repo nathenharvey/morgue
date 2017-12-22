@@ -1,0 +1,8 @@
+#!/bin/bash
+exec 2>&1
+echo "Seeding the Database"
+
+$(hab pkg path core/mysql-client)/bin/mysql -u root -h 127.0.0.1 \
+  --execute="create database if not exists morgue; \
+	     GRANT ALL ON morgue.* TO 'morgue'@'127.0.0.1' IDENTIFIED BY 'morgue_password';"  
+

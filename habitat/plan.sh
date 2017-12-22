@@ -6,11 +6,11 @@
 # and `pkg_version` to define the fully-qualified package name, which determines
 # where the package is installed to on disk, how it is referred to in package
 # metadata, and so on.
-pkg_name=nathenharvey/morgue
+pkg_name=morgue
 
 # Required unless overridden by the `HAB_ORIGIN` environment variable.
 # The origin is used to denote a particular upstream of a package.
-pkg_origin=nathenharvey
+pkg_origin=learn
 
 # Required.
 # Sets the version of the package
@@ -19,7 +19,7 @@ pkg_version="0.1.0"
 
 # Optional.
 # The name and email address of the package maintainer.
-pkg_maintainer="The Habitat Maintainers <humans@habitat.sh>"
+pkg_maintainer="Nathen Harvey <nharvey@chef.io>"
 
 
 # Optional.
@@ -33,7 +33,7 @@ pkg_license=("Apache-2.0")
 # will work. Typically, the relative path for the URL is partially constructed
 # from the pkg_name and pkg_version values; however, this convention is not
 # required.
-pkg_source="http://some_source_url/releases/${pkg_name}-${pkg_version}.tar.gz"
+# pkg_source="http://some_source_url/releases/${pkg_name}-${pkg_version}.tar.gz"
 
 
 # Optional.
@@ -48,19 +48,19 @@ pkg_source="http://some_source_url/releases/${pkg_name}-${pkg_version}.tar.gz"
 # and using the sha256sum or gsha256sum tools. Also, if you do not have
 # do_verify() overridden, and you do not have the correct sha-256 sum, then the
 # expected value will be shown in the build output of your package.
-pkg_shasum="TODO"
+# pkg_shasum="TODO"
 
 
 # Optional.
 # An array of package dependencies needed at runtime. You can refer to packages
 # at three levels of specificity: `origin/package`, `origin/package/version`, or
 # `origin/package/version/release`.
-pkg_deps=(core/glibc)
+pkg_deps=(core/mysql-client)
 
 
 # Optional.
 # An array of the package dependencies needed only at build time.
-pkg_build_deps=(core/make core/gcc)
+# pkg_build_deps=(core/make core/gcc)
 
 
 # Optional.
@@ -122,9 +122,9 @@ pkg_build_deps=(core/make core/gcc)
 # Supervisor to load the service. The loaded service will wait to run until it's bind becomes
 # available. If the bind does not contain the expected keys, the service will not start
 # successfully.
-# pkg_binds=(
-#   [database]="port host"
-# )
+pkg_binds=(
+  [database]="port host"
+)
 
 
 # Optional.
@@ -163,7 +163,7 @@ pkg_build_deps=(core/make core/gcc)
 
 # Required for core plans, optional otherwise.
 # The project home page for the package.
-# pkg_upstream_url="http://example.com/project-name"
+pkg_upstream_url="https://github.com/nathenharvey/morgue"
 
 
 # Callback Functions
@@ -199,7 +199,8 @@ do_begin() {
 # cloning from git. If you do clone a repo from git, you must override
 # do_verify() to return 0.
 do_download() {
-  do_default_download
+  return 0
+  # do_default_download
 }
 
 # The default implementation tries to verify the checksum specified in the plan
@@ -209,14 +210,16 @@ do_download() {
 # not need to override this behavior unless your package does not download
 # any files.
 do_verify() {
-  do_default_verify
+  return 0
+  # do_default_verify
 }
 
 # The default implementation removes the HAB_CACHE_SRC_PATH/$pkg_dirname folder
 # in case there was a previously-built version of your package installed on
 # disk. This ensures you start with a clean build environment.
 do_clean() {
-  do_default_clean
+  return 0
+  # do_default_clean
 }
 
 # The default implementation extracts your tarball source file into
@@ -225,7 +228,8 @@ do_clean() {
 # not supported, then a message will be printed to stderr with additional
 # information.
 do_unpack() {
-  do_default_unpack
+  return 0
+  # do_default_unpack
 }
 
 # There is no default implementation of this callback. At this point in the
@@ -244,7 +248,8 @@ do_prepare() {
 # if you have additional configuration changes to make or other software to
 # build and install as part of building your package.
 do_build() {
-  do_default_build
+  return 0
+  # do_default_build
 }
 
 # The default implementation runs nothing during post-compile. An example of a
@@ -264,7 +269,8 @@ do_check() {
 # specific directories in your package, or installing pre-built binaries into
 # your package.
 do_install() {
-  do_default_install
+  return 0
+  # do_default_install
 }
 
 # The default implementation is to strip any binaries in $pkg_prefix of their
