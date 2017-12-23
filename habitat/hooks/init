@@ -16,19 +16,13 @@ database_app_password=""
   {{~/eachAlive}}
 {{~/if}}
 
-echo "Nathen database_app_username: $database_app_username"
-echo "Nathen database_app_password: $database_app_password"
+# TODO - if there is no database, assume mysql is running locally
+#        create the database user with the appropriate permissions
 
-echo "$(hab pkg path core/mysql-client)/bin/mysql \
+$(hab pkg path core/mysql-client)/bin/mysql \
   -u $database_app_username \
   -h $database_host \
   -P $database_port \
   -p$database_app_password \
-  --execute=\"create database if not exists morgue; \
-	     GRANT ALL ON morgue.* TO '$database_app_username'@'$database_host';\""
-
-# $(hab pkg path core/mysql-client)/bin/mysql -u $database_app_username -h $database_host \
-#   -P $database_port -pmorgue_password \
-#   --execute="create database if not exists morgue; \
-# 	     GRANT ALL ON morgue.* TO '$database_app_username'@'$database_host';"
+  --execute="create database if not exists {{cfg.database.name}};" 
 
